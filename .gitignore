@@ -1,0 +1,31 @@
+# --- C ---
+*.o
+*.obj
+*.exe
+*.out
+*.app
+*.dSYM/
+bin/
+build/
+
+# --- Output ---
+out/
+
+# --- OS ---
+# Mac
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Linux
+*~
+
+# --- Editores e IDEs ---
+.vscode/
+.idea/
+*.swp
