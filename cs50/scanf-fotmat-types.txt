@@ -1,6 +1,13 @@
-%d to accept input of integers.
+%d or %i: Signed decimal integer (e.g., int, short, long).
 %ld to accept input of long integers
 %lld to accept input of long long integers
-%f to accept input of real number.
-%c to accept input of character types.
-%s to accept input of a string.
+%u: Unsigned decimal integer.
+%o: Octal integer.
+%x or %X: Hexadecimal integer (lowercase or uppercase letters for digits a-f).
+%f: Floating-point number (e.g., float, double).
+%e or %E: Floating-point number in scientific notation (lowercase or uppercase 'e').
+%g or %G: General format for floating-point numbers (uses %f or %e depending on the value).
+%c: Single character.
+%s: String (null-terminated character array).
+%p: Pointer address.
+%%: Prints a literal percent sign.
