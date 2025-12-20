@@ -10,5 +10,7 @@ int main() {
         printf("%3d \t %6.1f\n", fahr, (5.0 / 9.0) * (fahr - 32));
     }
 
+    printf("End of conversion table.\n");
+
     return 0;
 }
