@@ -19,7 +19,7 @@ typedef struct Node {
 } Node;
 
 Node* createNode(int val);
-void insertNode(Node** root, Node* newNode);
+Node* insertNode(Node* root, Node* newNode);
 void inorder(Node* root);
 
 int main() {
@@ -30,7 +30,7 @@ int main() {
     Node* root = NULL;
     for (int i = 0; i < len; i++) {
         Node* newNode = createNode(nums[i]);
-        insertNode(&root, newNode);
+        root = insertNode(root, newNode);
     }
 
     printf("\n--- INORDERN ---\n");
@@ -48,32 +48,18 @@ Node* createNode(int val) {
     return newNode;
 }
 
-void insertNode(Node** root, Node* newNode) {
-    
-    if (*root == NULL) {
-        *root = newNode;
-        return;
+Node* insertNode(Node* root, Node* newNode) {
+    if (root == NULL) {
+        root = newNode;
+        return root;
     }
 
-    Node* tmp = *root;
-
-    if (newNode->val < tmp->val) {
-        if (tmp->left == NULL) {
-            tmp->left = newNode;
-            return;
-        } else {
-            insertNode(&tmp->left, newNode);
-        }
-    }
-
-    if (newNode->val > tmp->val) {
-        if (tmp->right == NULL) {
-            tmp->right = newNode;
-            return;
-        } else {
-            insertNode(&tmp->right, newNode);
-        }
-    }
+    if (newNode->val < root->val) {
+            root->left = insertNode(root->left, newNode);
+    } else if (newNode->val > root->val) {
+        root->right = insertNode(root->right, newNode);
+    } 
+    return root;
 }
 
 void inorder(Node* root) {
