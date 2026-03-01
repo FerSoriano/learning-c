@@ -27,6 +27,7 @@ Node* insertNode(Node* root, Node* newNode);
 Node* deleteNode(Node* root, int val);
 void inorder(Node* root);
 int findMinVal(Node* root);
+Node* searchNode(Node* root, int val);
 
 void printTree(Node* root) {
     printf("\n--- INORDERN ---\n");
@@ -34,8 +35,8 @@ void printTree(Node* root) {
     printf("\n");
 }
 
-int main() {
-
+int main(int argc, char** argv) {
+    
     int nums[] = {100, 50, 150, 25, 80, 110, 200, 220, 210, 205, 209, 215, 199};
     int len = sizeof(nums) / sizeof(nums[0]);
 
@@ -47,11 +48,20 @@ int main() {
 
     printTree(root);
 
-    // delete
+    // search and delete
     int val;
-    printf("\nDelete node: ");
-    scanf("%d", &val);
-    root = deleteNode(root, val);
+    if (argc > 1) {
+        val = atoi(argv[1]);
+    } else {
+        printf("\nDelete node: ");
+        scanf("%d", &val);
+    }
+    if (searchNode(root, val) != NULL) {
+        root = deleteNode(root, val);
+        printf("\n>> Node [%d] has been deleted\n", val);
+    } else {
+        printf("\n>> Node [%d] not found.\n", val);
+    }
 
     printTree(root);
 
@@ -128,4 +138,18 @@ void inorder(Node* root) {
     inorder(root->left);
     printf("[%d] ", root->val);
     inorder(root->right);
+}
+
+
+Node* searchNode(Node* root, int val) {
+    if (root == NULL) return NULL;
+    if (root->val == val) return root;
+
+    if (val < root->val) {
+        return searchNode(root->left, val);
+    } else {
+        return searchNode(root->right, val);
+    }
+
+    return NULL;
 }
