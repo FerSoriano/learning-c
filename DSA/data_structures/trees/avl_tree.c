@@ -16,12 +16,15 @@ void setHeight(Node** n);
 int max(int a, int b);
 Node* rightRotation(Node* n);
 Node* leftRotation(Node* n);
+Node* deleteNode(Node* root, int val);
+int findMinVal(Node* n);
 
 void preorden(Node* root);
 
 int main() {
 
     int nums[] = {1, 2, 3, 4, 5, 6, 7, 8};
+    // int nums[] = {1, 3, 2};
     int size = sizeof(nums) / sizeof(nums[0]);
 
     Node* root = NULL;
@@ -30,6 +33,12 @@ int main() {
         Node* newNode = createNode(nums[i]);
         root = insertNode(root, newNode);  
     }
+
+    preorden(root);
+    printf("\n");
+
+    printf("\n>> Deleting root...\n\n");
+    root = deleteNode(root, 4);
 
     preorden(root);
     printf("\n");
@@ -64,12 +73,24 @@ Node* insertNode(Node* root, Node* newNode) {
 
     int balanceFactor = getHeight(root->left) - getHeight(root->right);
 
-    // todo
-    if (balanceFactor < -1) return leftRotation(root);
-    if (balanceFactor > 1)  return rightRotation(root);
-
+    if (balanceFactor < -1) {
+        Node* tmp = root->right;
+        if (getHeight(tmp->left) - getHeight(tmp->right) > 0) {
+            root->right = rightRotation(tmp); // double rotation
+        }
+        return leftRotation(root);
+    }
+    if (balanceFactor > 1){
+        Node* tmp = root->left;
+        if (getHeight(tmp->left) - getHeight(tmp->right) < 0) {
+            root->left = leftRotation(tmp); // double rotation
+        }
+        return rightRotation(root);
+    }
+    
     return root;
 }
+
 
 Node* leftRotation(Node* n) {
     Node* tmp = n->right;
@@ -97,7 +118,72 @@ Node* rightRotation(Node* n) {
     return tmp;
 }
 
+Node* deleteNode(Node* root, int val) {
+    if (root == NULL) return root;
+
+    if (val < root->val) {
+        root->left = deleteNode(root->left, val);
+    } else if (val > root->val) {
+        root->right = deleteNode(root->right, val);
+    } else {
+        // leaf
+        if (root->left == NULL && root->right == NULL) {
+            free(root);
+            return NULL;
+        }
+
+        // one child
+        else if (root->left == NULL || root->right == NULL) {
+            Node* tmp = NULL;
+            if (root->left == NULL) {
+                tmp = root->right;
+            } else {
+                tmp = root->left;
+            }
+            free(root);
+            return tmp;
+        }
+
+        // two children
+        else {
+            root->val = findMinVal(root->right);
+            root->right = deleteNode(root->right, root->val);
+        }
+    }
+
+    if (root == NULL) return root;
+    setHeight(&root);
+
+
+    // rotations
+    int balanceFactor = getHeight(root->left) - getHeight(root->right);
+
+    if (balanceFactor < -1) {
+        Node* tmp = root->right;
+        if (getHeight(tmp->left) - getHeight(tmp->right) > 0) {
+            root->right = rightRotation(tmp); // double rotation
+        }
+        return leftRotation(root);
+    }
+    if (balanceFactor > 1){
+        Node* tmp = root->left;
+        if (getHeight(tmp->left) - getHeight(tmp->right) < 0) {
+            root->left = leftRotation(tmp); // double rotation
+        }
+        return rightRotation(root);
+    }
+
+    return root;
+}
+
 // helper functions
+int findMinVal(Node* n) {
+    if (n == NULL) return 0;
+    if (n->left == NULL) return n->val;
+    return findMinVal(n->left);
+}
+
+
 int max(int a, int b) {
     return (a > b) ? a : b;
 }
