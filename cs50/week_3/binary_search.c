@@ -16,7 +16,7 @@ int main(int argc, char** argv) {
     // obtenemos el largo
     int size = sizeof(nums) / sizeof(nums[0]);
     
-    int target = atoi(argv[1]);
+    int target = atoi(argv[1]); // ascii to int
     int result = binarySearch(nums, size, target);
     if (result == -1) {
         printf("Target not found\n");
